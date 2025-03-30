@@ -5,14 +5,14 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Ejecutando build...'
-        sh 'npm install'
+        sh 'npm install --legacy-peer-deps'
       }
     }
 
     stage('Test') {
       steps {
         echo 'Ejecutando tests...'
-        sh 'npm test'
+        sh 'npm test -- --watchAll=false'
       }
     }
   }
