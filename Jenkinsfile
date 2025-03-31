@@ -3,12 +3,12 @@ pipeline {
 
     stages {
         stage('Build') {
-            steps {
-                echo 'Instalando dependencias...'
-                sh 'npm install --legacy-peer-deps'
-            }
-        }
-
+			steps {
+				echo 'Instalando dependencias...'
+				sh 'npm install --legacy-peer-deps'
+				echo '✅ Dependencias instaladas correctamente.'
+			}
+		}
         stage('Testing') {
             steps {
                 echo 'Ejecutando tests...'
