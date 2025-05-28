@@ -18,7 +18,7 @@ pipeline {
             }
             steps {
                 echo 'Ejecutando pruebas...'
-                sh './gradlew test' // Cambia esto según tu entorno
+                sh './gradlew test' // Cambia esto según tu entornoo
             }
         }
     }
