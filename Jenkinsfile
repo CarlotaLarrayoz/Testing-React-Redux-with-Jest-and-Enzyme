@@ -3,16 +3,28 @@ pipeline {
 
     stages {
         stage('Build') {
+            when {
+                expression {
+                    return env.BRANCH_NAME ==~ /feature.*/  // coincide con 'feature' o 'feature/test-practica'
+                }
+            }
             steps {
                 echo 'Compilando el proyecto...'
-                sh './gradlew build' // Cambia esto si usas npm, Maven, etc.
+                // Ajusta según tu stack:
+                sh 'npm install' 
+                sh 'npm run build'
             }
         }
 
         stage('Test') {
+            when {
+                expression {
+                    return env.BRANCH_NAME ==~ /feature.*/
+                }
+            }
             steps {
                 echo 'Ejecutando pruebas...'
-                sh './gradlew test' // Cambia esto según tu entornoo
+                sh 'npm test'
             }
         }
     }
@@ -22,7 +34,7 @@ pipeline {
             echo 'Pipeline finalizado correctamente.'
         }
         failure {
-            echo 'Pipeline fallido. Revisar errores en build o test.'
+            echo 'El pipeline ha fallado.'
         }
     }
 }
