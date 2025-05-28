@@ -1,55 +1,34 @@
 pipeline {
     agent any
 
-    // Solo se ejecuta en la rama feature/test-practica
-    triggers {
-        pollSCM('* * * * *') // solo como ejemplo si no hay webhooks
-    }
-
-    options {
-        skipStagesAfterUnstable()
-    }
-
-    environment {
-        NODE_ENV = 'development'
-    }
-
     stages {
-        stage('Preparación') {
+        stage('Build') {
+            when {
+                branch 'feature'
+            }
             steps {
-                echo 'Clonando y preparando entorno...'
+                echo 'Compilando el proyecto...'
+                sh './gradlew build' // Cambia esto si usas npm, Maven, etc.
             }
         }
 
-        stage('Instalar dependencias') {
-            steps {
-                echo 'Ejecutando npm install...'
-                sh 'npm install'
+        stage('Test') {
+            when {
+                branch 'feature'
             }
-        }
-
-        stage('Build (opcional)') {
             steps {
-                echo 'Build del proyecto...'
-                // Si usas un comando como npm run build, lo agregas aquí
-                sh 'echo "Build simulado: no se compila en esta práctica"'
-            }
-        }
-
-        stage('Testing') {
-            steps {
-                echo 'Ejecutando pruebas con npm test...'
-                sh 'npm test -- --watchAll=false'
+                echo 'Ejecutando pruebas...'
+                sh './gradlew test' // Cambia esto según tu entorno
             }
         }
     }
 
     post {
         success {
-            echo '✅ Pipeline completado correctamente.'
+            echo 'Pipeline finalizado correctamente.'
         }
         failure {
-            echo '❌ Error en el pipeline.'
+            echo 'Pipeline fallido. Revisar errores en build o test.'
         }
     }
 }
