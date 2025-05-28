@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            when {
+                branch 'main'
+            }
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo 'Compilando el proyecto...'
+                sh './gradlew build' // o el comando correspondiente a tu stack
+            }
+        }
+
+        stage('Test') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo 'Ejecutando pruebas automáticas...'
+                sh './gradlew test' // reemplaza según el entorno
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo 'Desplegando en el contenedor de la asignatura...'
+                // Supongamos que el contenedor usa una carpeta /app o un servicio en localhost
+                sh '''
+                    mkdir -p ~/deploy/app
+                    cp -r build/libs/*.jar ~/deploy/app/
+                    echo "Aplicación desplegada correctamente."
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completado exitosamente.'
+        }
+        failure {
+            echo 'Ha fallado alguna fase del pipeline. Revisar logs.'
+        }
+    }
+}
