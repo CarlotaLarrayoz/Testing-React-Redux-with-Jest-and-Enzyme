@@ -5,13 +5,12 @@ pipeline {
         stage('Build') {
             when {
                 expression {
-                    return env.BRANCH_NAME ==~ /feature.*/  // coincide con 'feature' o 'feature/test-practica'
+                    return env.BRANCH_NAME.startsWith('feature/')
                 }
             }
             steps {
                 echo 'Compilando el proyecto...'
-                // Ajusta según tu stack:
-                sh 'npm install' 
+                sh 'npm install'
                 sh 'npm run build'
             }
         }
@@ -19,7 +18,7 @@ pipeline {
         stage('Test') {
             when {
                 expression {
-                    return env.BRANCH_NAME ==~ /feature.*/
+                    return env.BRANCH_NAME.startsWith('feature/')
                 }
             }
             steps {
