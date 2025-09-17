@@ -9,3 +9,5 @@ Within this project you will find examples of testing:
 * Action creators and reducers
 * Complex action creators that use Redux Thunk and Axios
 * Action creators called from connected components
+
+* Prueba para la practica 9 de GPI II
